@@ -1,7 +1,6 @@
 const { useState, useEffect } = React;
 
 function App() {
-  // 日付更新処理
   const updateSchedules = (patient) => {
     const today = new Date();
     today.setHours(0,0,0,0);
@@ -257,148 +256,160 @@ function App() {
 
   // 入力フォーム
   if(isAdding || editingId) {
-    return React.createElement('div', {className:'min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 pb-24'},
-      React.createElement('div', {className:'max-w-2xl mx-auto px-4 py-6'},
-        React.createElement('div', {className:'bg-white rounded-2xl shadow-lg p-6 mb-6'},
-          React.createElement('h2', {className:'text-2xl font-bold text-gray-800 mb-6'}, editingId ? '患者情報編集' : '新規患者登録'),
+    return React.createElement('div', {className:'min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50'},
+      React.createElement('div', {className:'pb-32'},
+        React.createElement('div', {className:'bg-white shadow-sm sticky top-0 z-10 px-4 py-4 border-b'},
+          React.createElement('h2', {className:'text-xl font-bold text-gray-800'}, editingId ? '患者情報編集' : '新規患者登録')
+        ),
+        
+        React.createElement('div', {className:'px-4 py-6 space-y-6'},
+          // 患者ID
+          React.createElement('div', null,
+            React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-2'}, '患者ID'),
+            React.createElement('input', {type:'text', value:formData.patientId, onChange:(e)=>setFormData({...formData,patientId:e.target.value}), className:'w-full px-4 py-3 border border-gray-300 rounded-lg text-base', placeholder:'12345'})
+          ),
           
-          // 基本情報
-          React.createElement('div', {className:'space-y-5 mb-6'},
+          // 氏名
+          React.createElement('div', null,
+            React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-2'}, '氏名 *'),
+            React.createElement('input', {type:'text', value:formData.name, onChange:(e)=>setFormData({...formData,name:e.target.value}), className:'w-full px-4 py-3 border border-gray-300 rounded-lg text-base', placeholder:'山田花子'})
+          ),
+          
+          // 病室・主治医
+          React.createElement('div', {className:'grid grid-cols-2 gap-4'},
             React.createElement('div', null,
-              React.createElement('label', {className:'block text-base font-medium text-gray-700 mb-2'}, '患者ID'),
-              React.createElement('input', {type:'text', value:formData.patientId, onChange:(e)=>setFormData({...formData,patientId:e.target.value}), className:'w-full px-4 py-3 border-2 border-gray-300 rounded-xl text-base focus:border-indigo-500 focus:outline-none', placeholder:'12345'})
+              React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-2'}, '病室'),
+              React.createElement('input', {type:'text', value:formData.roomNumber, onChange:(e)=>setFormData({...formData,roomNumber:e.target.value}), className:'w-full px-4 py-3 border border-gray-300 rounded-lg text-base', placeholder:'301'})
             ),
             React.createElement('div', null,
-              React.createElement('label', {className:'block text-base font-medium text-gray-700 mb-2'}, '氏名 *'),
-              React.createElement('input', {type:'text', value:formData.name, onChange:(e)=>setFormData({...formData,name:e.target.value}), className:'w-full px-4 py-3 border-2 border-gray-300 rounded-xl text-base focus:border-indigo-500 focus:outline-none', placeholder:'山田花子'})
+              React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-2'}, '主治医'),
+              React.createElement('input', {type:'text', value:formData.doctor, onChange:(e)=>setFormData({...formData,doctor:e.target.value}), className:'w-full px-4 py-3 border border-gray-300 rounded-lg text-base', placeholder:'田中'})
+            )
+          ),
+          
+          // 出産予定日・入院日
+          React.createElement('div', {className:'grid grid-cols-2 gap-4'},
+            React.createElement('div', null,
+              React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-2'}, '出産予定日 *'),
+              React.createElement('input', {type:'date', value:formData.edd, onChange:(e)=>setFormData({...formData,edd:e.target.value}), className:'w-full px-4 py-3 border border-gray-300 rounded-lg text-base'})
             ),
-            React.createElement('div', {className:'grid grid-cols-2 gap-4'},
-              React.createElement('div', null,
-                React.createElement('label', {className:'block text-base font-medium text-gray-700 mb-2'}, '病室'),
-                React.createElement('input', {type:'text', value:formData.roomNumber, onChange:(e)=>setFormData({...formData,roomNumber:e.target.value}), className:'w-full px-4 py-3 border-2 border-gray-300 rounded-xl text-base focus:border-indigo-500 focus:outline-none', placeholder:'301'})
-              ),
-              React.createElement('div', null,
-                React.createElement('label', {className:'block text-base font-medium text-gray-700 mb-2'}, '主治医'),
-                React.createElement('input', {type:'text', value:formData.doctor, onChange:(e)=>setFormData({...formData,doctor:e.target.value}), className:'w-full px-4 py-3 border-2 border-gray-300 rounded-xl text-base focus:border-indigo-500 focus:outline-none', placeholder:'田中'})
-              )
+            React.createElement('div', null,
+              React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-2'}, '入院日'),
+              React.createElement('input', {type:'date', value:formData.admissionDate, onChange:(e)=>setFormData({...formData,admissionDate:e.target.value}), className:'w-full px-4 py-3 border border-gray-300 rounded-lg text-base'})
+            )
+          ),
+          
+          // 血圧
+          React.createElement('div', {className:'grid grid-cols-2 gap-4'},
+            React.createElement('div', null,
+              React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-2'}, '本日BP'),
+              React.createElement('input', {type:'text', value:formData.todayBP, onChange:(e)=>setFormData({...formData,todayBP:e.target.value}), className:'w-full px-4 py-3 border border-gray-300 rounded-lg text-base', placeholder:'120/80'})
             ),
-            React.createElement('div', {className:'grid grid-cols-2 gap-4'},
-              React.createElement('div', null,
-                React.createElement('label', {className:'block text-base font-medium text-gray-700 mb-2'}, '出産予定日 *'),
-                React.createElement('input', {type:'date', value:formData.edd, onChange:(e)=>setFormData({...formData,edd:e.target.value}), className:'w-full px-4 py-3 border-2 border-gray-300 rounded-xl text-base focus:border-indigo-500 focus:outline-none'})
-              ),
-              React.createElement('div', null,
-                React.createElement('label', {className:'block text-base font-medium text-gray-700 mb-2'}, '入院日'),
-                React.createElement('input', {type:'date', value:formData.admissionDate, onChange:(e)=>setFormData({...formData,admissionDate:e.target.value}), className:'w-full px-4 py-3 border-2 border-gray-300 rounded-xl text-base focus:border-indigo-500 focus:outline-none'})
-              )
-            ),
-            React.createElement('div', {className:'grid grid-cols-2 gap-4'},
-              React.createElement('div', null,
-                React.createElement('label', {className:'block text-base font-medium text-gray-700 mb-2'}, '本日BP'),
-                React.createElement('input', {type:'text', value:formData.todayBP, onChange:(e)=>setFormData({...formData,todayBP:e.target.value}), className:'w-full px-4 py-3 border-2 border-gray-300 rounded-xl text-base focus:border-indigo-500 focus:outline-none', placeholder:'120/80'})
-              ),
-              React.createElement('div', null,
-                React.createElement('label', {className:'block text-base font-medium text-gray-700 mb-2'}, '昨日BP'),
-                React.createElement('input', {type:'text', value:formData.yesterdayBP, onChange:(e)=>setFormData({...formData,yesterdayBP:e.target.value}), className:'w-full px-4 py-3 border-2 border-gray-300 rounded-xl text-base focus:border-indigo-500 focus:outline-none', placeholder:'118/78'})
-              )
+            React.createElement('div', null,
+              React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-2'}, '昨日BP'),
+              React.createElement('input', {type:'text', value:formData.yesterdayBP, onChange:(e)=>setFormData({...formData,yesterdayBP:e.target.value}), className:'w-full px-4 py-3 border border-gray-300 rounded-lg text-base', placeholder:'118/78'})
             )
           ),
 
           // プロブレム
-          React.createElement('div', {className:'mb-6'},
-            React.createElement('label', {className:'block text-base font-medium text-gray-700 mb-3'}, 'プロブレム（選択）'),
-            React.createElement('div', {className:'grid grid-cols-2 gap-3'},
+          React.createElement('div', null,
+            React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-3'}, 'プロブレム（選択）'),
+            React.createElement('div', {className:'grid grid-cols-2 gap-2'},
               commonProblems.map(p=>
                 React.createElement('button', {
                   key:p,
                   type:'button',
                   onClick:()=>toggleProblem(p),
-                  className:`px-4 py-3 rounded-xl text-base font-medium transition-colors ${formData.selectedProblems.includes(p)?'bg-amber-500 text-white':'bg-gray-100 text-gray-700 active:bg-gray-200'}`
+                  className:`px-3 py-2 rounded-lg text-sm ${formData.selectedProblems.includes(p)?'bg-amber-500 text-white':'bg-gray-100 text-gray-700'}`
                 }, p)
               )
             ),
-            React.createElement('label', {className:'block text-base font-medium text-gray-700 mt-5 mb-2'}, 'プロブレム（自由記述）'),
-            React.createElement('textarea', {value:formData.freeTextProblems, onChange:(e)=>setFormData({...formData,freeTextProblems:e.target.value}), className:'w-full px-4 py-3 border-2 border-gray-300 rounded-xl text-base focus:border-indigo-500 focus:outline-none', rows:3, placeholder:'1行に1つずつ記入'})
+            React.createElement('label', {className:'block text-sm font-medium text-gray-700 mt-4 mb-2'}, 'プロブレム（自由記述）'),
+            React.createElement('textarea', {value:formData.freeTextProblems, onChange:(e)=>setFormData({...formData,freeTextProblems:e.target.value}), className:'w-full px-4 py-3 border border-gray-300 rounded-lg text-base', rows:3, placeholder:'1行に1つずつ記入'})
           ),
 
-          // SOAP: S
-          React.createElement('div', {className:'mb-6'},
-            React.createElement('label', {className:'block text-base font-medium text-gray-700 mb-2'}, 'S) 主観的情報'),
-            React.createElement('textarea', {value:formData.subjective, onChange:(e)=>setFormData({...formData,subjective:e.target.value}), className:'w-full px-4 py-3 border-2 border-gray-300 rounded-xl text-base focus:border-indigo-500 focus:outline-none', rows:3, placeholder:'患者の訴えなど'})
+          // S
+          React.createElement('div', null,
+            React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-2'}, 'S) 主観的情報'),
+            React.createElement('textarea', {value:formData.subjective, onChange:(e)=>setFormData({...formData,subjective:e.target.value}), className:'w-full px-4 py-3 border border-gray-300 rounded-lg text-base', rows:3, placeholder:'患者の訴えなど'})
           ),
 
           // 本日の予定
-          React.createElement('div', {className:'mb-6'},
-            React.createElement('label', {className:'block text-base font-medium text-gray-700 mb-3'}, '本日の予定'),
-            React.createElement('div', {className:'flex gap-2 mb-3'},
-              React.createElement('input', {type:'text', value:newScheduleItem, onChange:(e)=>setNewScheduleItem(e.target.value), onKeyPress:(e)=>e.key==='Enter'&&addTodaySchedule(), className:'flex-1 px-4 py-3 border-2 border-gray-300 rounded-xl text-base focus:border-blue-500 focus:outline-none', placeholder:'予定内容'}),
-              React.createElement('input', {type:'time', value:newScheduleTime, onChange:(e)=>setNewScheduleTime(e.target.value), className:'px-4 py-3 border-2 border-gray-300 rounded-xl text-base focus:border-blue-500 focus:outline-none'}),
-              React.createElement('button', {onClick:addTodaySchedule, className:'px-5 py-3 bg-blue-600 text-white rounded-xl text-base font-medium active:bg-blue-700'}, '追加')
+          React.createElement('div', null,
+            React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-3'}, '本日の予定'),
+            React.createElement('div', {className:'space-y-2 mb-3'},
+              React.createElement('input', {type:'text', value:newScheduleItem, onChange:(e)=>setNewScheduleItem(e.target.value), className:'w-full px-4 py-3 border border-gray-300 rounded-lg text-base', placeholder:'予定内容'}),
+              React.createElement('div', {className:'flex gap-2'},
+                React.createElement('input', {type:'time', value:newScheduleTime, onChange:(e)=>setNewScheduleTime(e.target.value), className:'flex-1 px-4 py-3 border border-gray-300 rounded-lg text-base'}),
+                React.createElement('button', {onClick:addTodaySchedule, className:'px-6 py-3 bg-blue-600 text-white rounded-lg text-base font-medium'}, '追加')
+              )
             ),
-            React.createElement('div', {className:'flex gap-2 mb-3 flex-wrap'},
+            React.createElement('div', {className:'grid grid-cols-3 gap-2 mb-3'},
               ['血液検査','術前検査','帝王切開','IC','他科コンサルト','他科受診'].map(t=>
-                React.createElement('button', {key:t, onClick:()=>addQuickToday(t), className:'px-4 py-2 bg-blue-100 text-blue-700 rounded-lg text-sm font-medium active:bg-blue-200'}, t)
+                React.createElement('button', {key:t, onClick:()=>addQuickToday(t), className:'px-2 py-2 bg-blue-100 text-blue-700 rounded text-xs font-medium'}, t)
               )
             ),
             React.createElement('div', {className:'space-y-2'},
               formData.todaySchedule.map(item=>
-                React.createElement('div', {key:item.id, className:'flex items-center gap-3 bg-blue-50 p-3 rounded-xl'},
-                  React.createElement('button', {onClick:()=>toggleTodaySchedule(item.id), className:'flex-shrink-0 text-2xl w-8 h-8 flex items-center justify-center'}, item.completed?'✓':'○'),
-                  React.createElement('span', {className:`flex-1 text-base ${item.completed?'line-through text-gray-400':'text-gray-700'}`}, item.text),
-                  React.createElement('button', {onClick:()=>removeTodaySchedule(item.id), className:'text-red-600 text-2xl w-8 h-8 flex items-center justify-center'}, '×')
+                React.createElement('div', {key:item.id, className:'flex items-center gap-2 bg-blue-50 p-3 rounded-lg'},
+                  React.createElement('button', {onClick:()=>toggleTodaySchedule(item.id), className:'text-xl'}, item.completed?'✓':'○'),
+                  React.createElement('span', {className:`flex-1 text-sm ${item.completed?'line-through text-gray-400':'text-gray-700'}`}, item.text),
+                  React.createElement('button', {onClick:()=>removeTodaySchedule(item.id), className:'text-red-600 text-xl'}, '×')
                 )
               )
             )
           ),
 
           // 明日の予定
-          React.createElement('div', {className:'mb-6'},
-            React.createElement('label', {className:'block text-base font-medium text-gray-700 mb-3'}, '明日の予定'),
-            React.createElement('div', {className:'flex gap-2 mb-3'},
-              React.createElement('input', {type:'text', value:newTomorrowItem, onChange:(e)=>setNewTomorrowItem(e.target.value), onKeyPress:(e)=>e.key==='Enter'&&addTomorrowSchedule(), className:'flex-1 px-4 py-3 border-2 border-gray-300 rounded-xl text-base focus:border-green-500 focus:outline-none', placeholder:'予定内容'}),
-              React.createElement('input', {type:'time', value:newTomorrowTime, onChange:(e)=>setNewTomorrowTime(e.target.value), className:'px-4 py-3 border-2 border-gray-300 rounded-xl text-base focus:border-green-500 focus:outline-none'}),
-              React.createElement('button', {onClick:addTomorrowSchedule, className:'px-5 py-3 bg-green-600 text-white rounded-xl text-base font-medium active:bg-green-700'}, '追加')
+          React.createElement('div', null,
+            React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-3'}, '明日の予定'),
+            React.createElement('div', {className:'space-y-2 mb-3'},
+              React.createElement('input', {type:'text', value:newTomorrowItem, onChange:(e)=>setNewTomorrowItem(e.target.value), className:'w-full px-4 py-3 border border-gray-300 rounded-lg text-base', placeholder:'予定内容'}),
+              React.createElement('div', {className:'flex gap-2'},
+                React.createElement('input', {type:'time', value:newTomorrowTime, onChange:(e)=>setNewTomorrowTime(e.target.value), className:'flex-1 px-4 py-3 border border-gray-300 rounded-lg text-base'}),
+                React.createElement('button', {onClick:addTomorrowSchedule, className:'px-6 py-3 bg-green-600 text-white rounded-lg text-base font-medium'}, '追加')
+              )
             ),
-            React.createElement('div', {className:'flex gap-2 mb-3 flex-wrap'},
+            React.createElement('div', {className:'grid grid-cols-3 gap-2 mb-3'},
               ['血液検査','術前検査','帝王切開','IC','他科コンサルト','他科受診'].map(t=>
-                React.createElement('button', {key:t, onClick:()=>addQuickTomorrow(t), className:'px-4 py-2 bg-green-100 text-green-700 rounded-lg text-sm font-medium active:bg-green-200'}, t)
+                React.createElement('button', {key:t, onClick:()=>addQuickTomorrow(t), className:'px-2 py-2 bg-green-100 text-green-700 rounded text-xs font-medium'}, t)
               )
             ),
             React.createElement('div', {className:'space-y-2'},
               formData.tomorrowSchedule.map(item=>
-                React.createElement('div', {key:item.id, className:'flex items-center gap-3 bg-green-50 p-3 rounded-xl'},
-                  React.createElement('span', {className:'flex-1 text-base text-gray-700'}, item.text),
-                  React.createElement('button', {onClick:()=>removeTomorrowSchedule(item.id), className:'text-red-600 text-2xl w-8 h-8 flex items-center justify-center'}, '×')
+                React.createElement('div', {key:item.id, className:'flex items-center gap-2 bg-green-50 p-3 rounded-lg'},
+                  React.createElement('span', {className:'flex-1 text-sm text-gray-700'}, item.text),
+                  React.createElement('button', {onClick:()=>removeTomorrowSchedule(item.id), className:'text-red-600 text-xl'}, '×')
                 )
               )
             )
           ),
 
           // 今後の予定
-          React.createElement('div', {className:'mb-6'},
-            React.createElement('label', {className:'block text-base font-medium text-gray-700 mb-3'}, '今後の予定'),
+          React.createElement('div', null,
+            React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-3'}, '今後の予定'),
             React.createElement('div', {className:'space-y-2 mb-3'},
-              React.createElement('div', {className:'flex gap-2'},
-                React.createElement('input', {type:'date', value:newFuture.date, onChange:(e)=>setNewFuture({...newFuture,date:e.target.value}), className:'flex-1 px-4 py-3 border-2 border-gray-300 rounded-xl text-base focus:border-purple-500 focus:outline-none'}),
-                React.createElement('input', {type:'time', value:newFuture.time, onChange:(e)=>setNewFuture({...newFuture,time:e.target.value}), className:'px-4 py-3 border-2 border-gray-300 rounded-xl text-base focus:border-purple-500 focus:outline-none'})
+              React.createElement('div', {className:'grid grid-cols-2 gap-2'},
+                React.createElement('input', {type:'date', value:newFuture.date, onChange:(e)=>setNewFuture({...newFuture,date:e.target.value}), className:'px-4 py-3 border border-gray-300 rounded-lg text-base'}),
+                React.createElement('input', {type:'time', value:newFuture.time, onChange:(e)=>setNewFuture({...newFuture,time:e.target.value}), className:'px-4 py-3 border border-gray-300 rounded-lg text-base'})
               ),
               React.createElement('div', {className:'flex gap-2'},
-                React.createElement('input', {type:'text', value:newFuture.text, onChange:(e)=>setNewFuture({...newFuture,text:e.target.value}), onKeyPress:(e)=>e.key==='Enter'&&addFutureSchedule(), className:'flex-1 px-4 py-3 border-2 border-gray-300 rounded-xl text-base focus:border-purple-500 focus:outline-none', placeholder:'予定内容'}),
-                React.createElement('button', {onClick:addFutureSchedule, className:'px-5 py-3 bg-purple-600 text-white rounded-xl text-base font-medium active:bg-purple-700'}, '追加')
+                React.createElement('input', {type:'text', value:newFuture.text, onChange:(e)=>setNewFuture({...newFuture,text:e.target.value}), className:'flex-1 px-4 py-3 border border-gray-300 rounded-lg text-base', placeholder:'予定内容'}),
+                React.createElement('button', {onClick:addFutureSchedule, className:'px-6 py-3 bg-purple-600 text-white rounded-lg text-base font-medium'}, '追加')
               )
             ),
-            newFuture.date && formData.edd && React.createElement('div', {className:'text-base text-blue-600 font-medium mb-3'}, `妊娠週数: ${calcGA(formData.edd, newFuture.date)}`),
-            React.createElement('div', {className:'flex gap-2 mb-3 flex-wrap'},
+            newFuture.date && formData.edd && React.createElement('div', {className:'text-sm text-blue-600 font-medium mb-2'}, `妊娠週数: ${calcGA(formData.edd, newFuture.date)}`),
+            React.createElement('div', {className:'grid grid-cols-3 gap-2 mb-3'},
               ['血液検査','術前検査','帝王切開','IC','他科コンサルト','他科受診'].map(t=>
-                React.createElement('button', {key:t, onClick:()=>addQuickFuture(t), className:'px-4 py-2 bg-purple-100 text-purple-700 rounded-lg text-sm font-medium active:bg-purple-200'}, t)
+                React.createElement('button', {key:t, onClick:()=>addQuickFuture(t), className:'px-2 py-2 bg-purple-100 text-purple-700 rounded text-xs font-medium'}, t)
               )
             ),
             React.createElement('div', {className:'space-y-2'},
               formData.futureScheduleItems.map(item=>
-                React.createElement('div', {key:item.id, className:'flex items-center gap-3 bg-purple-50 p-3 rounded-xl'},
-                  item.date && React.createElement('span', {className:'text-purple-700 font-medium text-base shrink-0'}, new Date(item.date).toLocaleDateString('ja-JP',{month:'short',day:'numeric'})),
-                  React.createElement('span', {className:'flex-1 text-base text-gray-700'}, item.text),
-                  React.createElement('button', {onClick:()=>removeFutureSchedule(item.id), className:'text-red-600 text-2xl w-8 h-8 flex items-center justify-center'}, '×')
+                React.createElement('div', {key:item.id, className:'flex items-center gap-2 bg-purple-50 p-3 rounded-lg'},
+                  item.date && React.createElement('span', {className:'text-purple-700 font-medium text-xs shrink-0'}, new Date(item.date).toLocaleDateString('ja-JP',{month:'short',day:'numeric'})),
+                  React.createElement('span', {className:'flex-1 text-sm text-gray-700'}, item.text),
+                  React.createElement('button', {onClick:()=>removeFutureSchedule(item.id), className:'text-red-600 text-xl'}, '×')
                 )
               )
             )
@@ -406,10 +417,10 @@ function App() {
         ),
 
         // 固定ボタン
-        React.createElement('div', {className:'fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-lg'},
-          React.createElement('div', {className:'max-w-2xl mx-auto flex gap-3'},
-            React.createElement('button', {onClick:editingId?updatePatient:addPatient, className:'flex-1 bg-indigo-600 text-white px-6 py-4 rounded-xl font-bold text-lg active:bg-indigo-700'}, editingId?'更新':'登録'),
-            React.createElement('button', {onClick:resetForm, className:'px-6 py-4 bg-gray-300 text-gray-700 rounded-xl font-bold text-lg active:bg-gray-400'}, 'キャンセル')
+        React.createElement('div', {className:'fixed bottom-0 left-0 right-0 bg-white border-t p-4'},
+          React.createElement('div', {className:'flex gap-3'},
+            React.createElement('button', {onClick:editingId?updatePatient:addPatient, className:'flex-1 bg-indigo-600 text-white py-4 rounded-lg font-bold text-lg'}, editingId?'更新':'登録'),
+            React.createElement('button', {onClick:resetForm, className:'px-6 py-4 bg-gray-300 text-gray-700 rounded-lg font-bold text-lg'}, 'キャンセル')
           )
         )
       )
@@ -417,21 +428,23 @@ function App() {
   }
 
   // メイン画面
-  return React.createElement('div', {className:'min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 pb-6'},
-    React.createElement('div', {className:'max-w-2xl mx-auto px-4 py-6'},
-      React.createElement('div', {className:'bg-white rounded-2xl shadow-lg p-6 mb-6'},
-        React.createElement('h1', {className:'text-3xl font-bold text-gray-800 mb-2'}, '担当患者回診管理'),
-        React.createElement('p', {className:'text-gray-600 text-base'}, '産科担当患者の情報を管理します')
+  return React.createElement('div', {className:'min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50'},
+    React.createElement('div', {className:'p-4 space-y-4'},
+      // ヘッダー
+      React.createElement('div', {className:'bg-white rounded-lg shadow p-4'},
+        React.createElement('h1', {className:'text-2xl font-bold text-gray-800'}, '担当患者回診管理'),
+        React.createElement('p', {className:'text-gray-600 text-sm mt-1'}, '産科担当患者の情報を管理します')
       ),
       
-      React.createElement('div', {className:'mb-6 space-y-3'},
-        React.createElement('div', {className:'flex gap-3'},
-          React.createElement('button', {onClick:()=>setIsAdding(true), className:'flex-1 bg-indigo-600 text-white px-6 py-4 rounded-xl text-lg font-bold active:bg-indigo-700'}, '新規患者登録'),
-          React.createElement('button', {onClick:()=>setShowAllTasks(!showAllTasks), className:'flex-1 bg-green-600 text-white px-6 py-4 rounded-xl text-lg font-bold active:bg-green-700'}, showAllTasks?'患者別':'タスク一覧')
+      // ボタン
+      React.createElement('div', {className:'space-y-3'},
+        React.createElement('div', {className:'grid grid-cols-2 gap-3'},
+          React.createElement('button', {onClick:()=>setIsAdding(true), className:'bg-indigo-600 text-white py-4 rounded-lg text-base font-bold'}, '新規患者登録'),
+          React.createElement('button', {onClick:()=>setShowAllTasks(!showAllTasks), className:'bg-green-600 text-white py-4 rounded-lg text-base font-bold'}, showAllTasks?'患者別':'タスク一覧')
         ),
-        React.createElement('div', {className:'flex items-center gap-3 bg-white rounded-xl p-3 shadow'},
-          React.createElement('label', {className:'text-base font-medium text-gray-700'}, '表示順:'),
-          React.createElement('select', {value:sortBy, onChange:(e)=>setSortBy(e.target.value), className:'flex-1 px-4 py-2 border-2 border-gray-300 rounded-lg text-base focus:border-indigo-500 focus:outline-none'},
+        React.createElement('div', {className:'bg-white rounded-lg p-3 shadow flex items-center gap-3'},
+          React.createElement('label', {className:'text-sm font-medium text-gray-700'}, '表示順:'),
+          React.createElement('select', {value:sortBy, onChange:(e)=>setSortBy(e.target.value), className:'flex-1 px-3 py-2 border border-gray-300 rounded text-base'},
             React.createElement('option', {value:'none'}, '登録順'),
             React.createElement('option', {value:'doctor'}, '主治医別'),
             React.createElement('option', {value:'room'}, '病室順'),
@@ -440,18 +453,18 @@ function App() {
         )
       ),
 
-      patients.length===0 && React.createElement('div', {className:'bg-white rounded-2xl shadow p-8 text-center text-gray-500 text-lg'}, '登録されている患者はいません'),
+      patients.length===0 && React.createElement('div', {className:'bg-white rounded-lg shadow p-8 text-center text-gray-500'}, '登録されている患者はいません'),
 
-      // タスク一覧表示
-      showAllTasks && patients.length>0 && React.createElement('div', {className:'bg-white rounded-2xl shadow-lg p-6 mb-4'},
-        React.createElement('h2', {className:'text-2xl font-bold text-gray-800 mb-4'}, '本日のタスク一覧'),
-        getAllTasks().length===0 ? React.createElement('p', {className:'text-gray-500 text-center py-4 text-base'}, '本日のタスクはありません') :
+      // タスク一覧
+      showAllTasks && patients.length>0 && React.createElement('div', {className:'bg-white rounded-lg shadow p-4'},
+        React.createElement('h2', {className:'text-xl font-bold text-gray-800 mb-4'}, '本日のタスク一覧'),
+        getAllTasks().length===0 ? React.createElement('p', {className:'text-gray-500 text-center py-4'}, '本日のタスクはありません') :
         React.createElement('div', {className:'space-y-3'}, getAllTasks().map(task=>
-          React.createElement('div', {key:`${task.patientId}-${task.id}`, className:`flex items-center gap-3 p-4 rounded-xl ${task.completed?'bg-gray-100':'bg-blue-50'}`},
-            React.createElement('button', {onClick:()=>completeTask(task.patientId,task.id), className:'flex-shrink-0 text-2xl w-10 h-10 flex items-center justify-center'}, task.completed?'✓':'○'),
+          React.createElement('div', {key:`${task.patientId}-${task.id}`, className:`flex items-center gap-3 p-3 rounded-lg ${task.completed?'bg-gray-100':'bg-blue-50'}`},
+            React.createElement('button', {onClick:()=>completeTask(task.patientId,task.id), className:'text-xl'}, task.completed?'✓':'○'),
             React.createElement('div', {className:'flex-1'},
-              React.createElement('div', {className:`font-bold text-lg ${task.completed?'text-gray-400 line-through':'text-indigo-700'}`}, task.patientName),
-              React.createElement('div', {className:`text-base ${task.completed?'text-gray-400 line-through':'text-gray-700'}`}, task.text)
+              React.createElement('div', {className:`font-bold text-base ${task.completed?'text-gray-400 line-through':'text-indigo-700'}`}, task.patientName),
+              React.createElement('div', {className:`text-sm ${task.completed?'text-gray-400 line-through':'text-gray-700'}`}, task.text)
             )
           )
         ))
@@ -459,83 +472,83 @@ function App() {
 
       // 患者リスト
       !showAllTasks && getSorted().map(patient=>
-        React.createElement('div', {key:patient.id, className:'bg-white rounded-2xl shadow-lg p-6 mb-4'},
-          React.createElement('div', {className:'flex justify-between items-start mb-4'},
+        React.createElement('div', {key:patient.id, className:'bg-white rounded-lg shadow p-4'},
+          React.createElement('div', {className:'flex justify-between items-start mb-3'},
             React.createElement('div', {className:'flex-1'},
-              React.createElement('div', {className:'flex items-center gap-2 mb-3 flex-wrap'},
-                patient.patientId && React.createElement('span', {className:'px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-semibold'}, `ID: ${patient.patientId}`),
-                React.createElement('h3', {className:'text-2xl font-bold text-gray-800'}, patient.name),
-                patient.roomNumber && React.createElement('span', {className:'px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-semibold'}, `${patient.roomNumber}号室`),
-                patient.doctor && React.createElement('span', {className:'px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold'}, patient.doctor)
+              React.createElement('div', {className:'flex flex-wrap items-center gap-2 mb-2'},
+                patient.patientId && React.createElement('span', {className:'px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs font-semibold'}, `ID:${patient.patientId}`),
+                React.createElement('h3', {className:'text-xl font-bold text-gray-800'}, patient.name),
+                patient.roomNumber && React.createElement('span', {className:'px-2 py-1 bg-indigo-100 text-indigo-700 rounded text-xs font-semibold'}, `${patient.roomNumber}号室`),
+                patient.doctor && React.createElement('span', {className:'px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-semibold'}, patient.doctor)
               ),
-              React.createElement('div', {className:'space-y-2 text-base'},
+              React.createElement('div', {className:'space-y-1 text-sm'},
                 React.createElement('div', null,
-                  React.createElement('span', {className:'text-gray-600'}, '出産予定日: '),
-                  React.createElement('span', {className:'font-semibold text-gray-800'}, new Date(patient.edd).toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric'}))
+                  React.createElement('span', {className:'text-gray-600'}, '予定日: '),
+                  React.createElement('span', {className:'font-semibold text-gray-800'}, new Date(patient.edd).toLocaleDateString('ja-JP',{month:'long',day:'numeric'}))
                 ),
                 React.createElement('div', null,
-                  React.createElement('span', {className:'text-gray-600'}, '妊娠週数: '),
-                  React.createElement('span', {className:'font-bold text-indigo-600 text-xl'}, calcGA(patient.edd))
+                  React.createElement('span', {className:'text-gray-600'}, '週数: '),
+                  React.createElement('span', {className:'font-bold text-indigo-600 text-base'}, calcGA(patient.edd))
                 ),
                 patient.admissionDate && React.createElement('div', null,
-                  React.createElement('span', {className:'text-gray-600'}, '入院日数: '),
+                  React.createElement('span', {className:'text-gray-600'}, '入院: '),
                   React.createElement('span', {className:'font-semibold text-gray-800'}, (()=>{
                     const adm=new Date(patient.admissionDate); const today=new Date();
                     adm.setHours(0,0,0,0); today.setHours(0,0,0,0);
                     return `${Math.floor((today-adm)/(1000*60*60*24))+1}日目`;
                   })())
                 ),
-                patient.todayBP && React.createElement('div', null, React.createElement('span', {className:'text-gray-600'}, '本日BP: '), React.createElement('span', {className:'font-semibold text-gray-800'}, patient.todayBP)),
-                patient.yesterdayBP && React.createElement('div', null, React.createElement('span', {className:'text-gray-600'}, '昨日BP: '), React.createElement('span', {className:'font-semibold text-gray-500'}, patient.yesterdayBP))
+                patient.todayBP && React.createElement('div', null, React.createElement('span', {className:'text-gray-600'}, '本日BP: '), React.createElement('span', {className:'font-semibold'}, patient.todayBP)),
+                patient.yesterdayBP && React.createElement('div', null, React.createElement('span', {className:'text-gray-600'}, '昨日BP: '), React.createElement('span', {className:'text-gray-500'}, patient.yesterdayBP))
               )
             ),
             React.createElement('div', {className:'flex gap-2'},
-              React.createElement('button', {onClick:()=>startEdit(patient), className:'p-3 text-blue-600 bg-blue-50 rounded-xl text-2xl active:bg-blue-100', title:'編集'}, '✏️'),
-              React.createElement('button', {onClick:()=>deletePatient(patient.id), className:'p-3 text-red-600 bg-red-50 rounded-xl text-2xl active:bg-red-100', title:'削除'}, '🗑️')
+              React.createElement('button', {onClick:()=>startEdit(patient), className:'p-2 text-blue-600 bg-blue-50 rounded text-xl'}, '✏️'),
+              React.createElement('button', {onClick:()=>deletePatient(patient.id), className:'p-2 text-red-600 bg-red-50 rounded text-xl'}, '🗑️')
             )
           ),
 
-          getCombinedProblems(patient).length>0 && React.createElement('div', {className:'bg-amber-50 border-l-4 border-amber-400 p-4 rounded-xl mb-4'},
-            React.createElement('h4', {className:'font-bold text-gray-700 mb-2 text-base'}, 'プロブレム'),
-            React.createElement('div', {className:'flex flex-wrap gap-2'}, getCombinedProblems(patient).map((p,i)=>
-              React.createElement('span', {key:i, className:'bg-white px-3 py-1 rounded-full text-base text-gray-700 border border-amber-200'}, p)
+          getCombinedProblems(patient).length>0 && React.createElement('div', {className:'bg-amber-50 border-l-4 border-amber-400 p-3 rounded mb-3'},
+            React.createElement('h4', {className:'font-bold text-gray-700 mb-2 text-sm'}, 'プロブレム'),
+            React.createElement('div', {className:'flex flex-wrap gap-1'}, getCombinedProblems(patient).map((p,i)=>
+              React.createElement('span', {key:i, className:'bg-white px-2 py-1 rounded text-xs text-gray-700 border border-amber-200'}, p)
             ))
           ),
 
-          patient.subjective?.trim() && React.createElement('div', {className:'bg-gray-50 border-l-4 border-gray-400 p-4 rounded-xl mb-4'},
-            React.createElement('h4', {className:'font-bold text-gray-700 mb-2 text-base'}, 'S) 主観的情報'),
-            React.createElement('p', {className:'text-base text-gray-700 whitespace-pre-wrap'}, patient.subjective)
+          patient.subjective?.trim() && React.createElement('div', {className:'bg-gray-50 border-l-4 border-gray-400 p-3 rounded mb-3'},
+            React.createElement('h4', {className:'font-bold text-gray-700 mb-1 text-sm'}, 'S) 主観的情報'),
+            React.createElement('p', {className:'text-sm text-gray-700 whitespace-pre-wrap'}, patient.subjective)
           ),
 
-          React.createElement('div', {className:'bg-blue-50 border-l-4 border-blue-400 p-4 rounded-xl mb-4'},
-            React.createElement('h4', {className:'font-bold text-gray-700 mb-2 text-base'}, '本日の予定'),
-            patient.todaySchedule?.length>0 ? React.createElement('div', {className:'space-y-2'}, patient.todaySchedule.map(item=>
+          React.createElement('div', {className:'bg-blue-50 border-l-4 border-blue-400 p-3 rounded mb-3'},
+            React.createElement('h4', {className:'font-bold text-gray-700 mb-2 text-sm'}, '本日の予定'),
+            patient.todaySchedule?.length>0 ? React.createElement('div', {className:'space-y-1'}, patient.todaySchedule.map(item=>
               React.createElement('div', {key:item.id, className:'flex items-center gap-2'},
-                React.createElement('span', {className:'text-xl'}, item.completed?'✓':'○'),
-                React.createElement('span', {className:`text-base ${item.completed?'line-through text-gray-400':'text-gray-700'}`}, item.text)
+                React.createElement('span', {className:'text-base'}, item.completed?'✓':'○'),
+                React.createElement('span', {className:`text-sm ${item.completed?'line-through text-gray-400':'text-gray-700'}`}, item.text)
               )
-            )) : React.createElement('p', {className:'text-base text-gray-500'}, 'なし')
+            )) : React.createElement('p', {className:'text-sm text-gray-500'}, 'なし')
           ),
 
-          React.createElement('div', {className:'bg-green-50 border-l-4 border-green-400 p-4 rounded-xl mb-4'},
-            React.createElement('h4', {className:'font-bold text-gray-700 mb-2 text-base'}, '明日の予定'),
-            patient.tomorrowSchedule?.length>0 ? React.createElement('div', {className:'space-y-2'}, patient.tomorrowSchedule.map(item=>
-              React.createElement('div', {key:item.id, className:'flex items-start gap-2 text-base text-gray-700'},
-                React.createElement('span', {className:'flex-shrink-0'}, '•'),
-                React.createElement('span', {className:'flex-1'}, item.text)
+          React.createElement('div', {className:'bg-green-50 border-l-4 border-green-400 p-3 rounded mb-3'},
+            React.createElement('h4', {className:'font-bold text-gray-700 mb-2 text-sm'}, '明日の予定'),
+            patient.tomorrowSchedule?.length>0 ? React.createElement('div', {className:'space-y-1'}, patient.tomorrowSchedule.map(item=>
+              React.createElement('div', {key:item.id, className:'flex items-start gap-2 text-sm text-gray-700'},
+                React.createElement('span', null, '•'),
+                React.createElement('span', null, item.text)
               )
-            )) : React.createElement('p', {className:'text-base text-gray-500'}, 'なし')
+            )) : React.createElement('p', {className:'text-sm text-gray-500'}, 'なし')
           ),
 
-          patient.futureScheduleItems?.length>0 && React.createElement('div', {className:'bg-purple-50 border-l-4 border-purple-400 p-4 rounded-xl'},
-            React.createElement('h4', {className:'font-bold text-gray-700 mb-2 text-base'}, '今後の予定'),
-            React.createElement('div', {className:'space-y-2'}, patient.futureScheduleItems.sort((a,b)=>{
+          patient.futureScheduleItems?.length>0 && React.createElement('div', {className:'bg-purple-50 border-l-4 border-purple-400 p-3 rounded'},
+            React.createElement('h4', {className:'font-bold text-gray-700 mb-2 text-sm'}, '今後の予定'),
+            React.createElement('div', {className:'space-y-1'}, patient.futureScheduleItems.sort((a,b)=>{
               if(!a.date&&!b.date)return 0; if(!a.date)return 1; if(!b.date)return -1;
               return new Date(a.date)-new Date(b.date);
             }).map(item=>
-              React.createElement('div', {key:item.id, className:'flex items-start gap-2 text-base text-gray-700'},
-                React.createElement('span', {className:'flex-shrink-0'}, '•'),
-                React.createElement('div', {className:'flex-1'},
+              React.createElement('div', {key:item.id, className:'flex items-start gap-2 text-sm text-gray-700'},
+                React.createElement('span', null, '•'),
+                React.createElement('div', null,
                   item.date && React.createElement('span', {className:'font-medium text-purple-700'}, new Date(item.date).toLocaleDateString('ja-JP',{month:'short',day:'numeric'})+' - '),
                   item.text
                 )
