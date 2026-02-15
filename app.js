@@ -292,11 +292,11 @@ function App() {
           React.createElement('div', {className:'grid grid-cols-2 gap-4'},
             React.createElement('div', null,
               React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-2'}, '出産予定日 *'),
-              React.createElement('input', {type:'date', value:formData.edd, onChange:(e)=>setFormData({...formData,edd:e.target.value}), className:'w-full px-3 py-3 border border-gray-300 rounded-lg text-base'})
+              React.createElement('input', {type:'date', value:formData.edd, onChange:(e)=>setFormData({...formData,edd:e.target.value}), className:'w-full px-2 py-3 border border-gray-300 rounded-lg text-sm'})
             ),
             React.createElement('div', null,
               React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-2'}, '入院日'),
-              React.createElement('input', {type:'date', value:formData.admissionDate, onChange:(e)=>setFormData({...formData,admissionDate:e.target.value}), className:'w-full px-3 py-3 border border-gray-300 rounded-lg text-base'})
+              React.createElement('input', {type:'date', value:formData.admissionDate, onChange:(e)=>setFormData({...formData,admissionDate:e.target.value}), className:'w-full px-2 py-3 border border-gray-300 rounded-lg text-sm'})
             )
           ),
           
@@ -398,8 +398,8 @@ function App() {
             React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-3'}, '今後の予定'),
             React.createElement('div', {className:'space-y-2 mb-3'},
               React.createElement('div', {className:'grid grid-cols-2 gap-2'},
-                React.createElement('input', {type:'date', value:newFuture.date, onChange:(e)=>setNewFuture({...newFuture,date:e.target.value}), className:'px-3 py-3 border border-gray-300 rounded-lg text-base'}),
-                React.createElement('input', {type:'time', value:newFuture.time, onChange:(e)=>setNewFuture({...newFuture,time:e.target.value}), className:'px-3 py-3 border border-gray-300 rounded-lg text-base'})
+                React.createElement('input', {type:'date', value:newFuture.date, onChange:(e)=>setNewFuture({...newFuture,date:e.target.value}), className:'px-2 py-3 border border-gray-300 rounded-lg text-sm'}),
+                React.createElement('input', {type:'time', value:newFuture.time, onChange:(e)=>setNewFuture({...newFuture,time:e.target.value}), className:'px-2 py-3 border border-gray-300 rounded-lg text-sm'})
               ),
               React.createElement('div', {className:'flex gap-2'},
                 React.createElement('input', {type:'text', value:newFuture.text, onChange:(e)=>setNewFuture({...newFuture,text:e.target.value}), onKeyPress:(e)=>e.key==='Enter'&&addFutureSchedule(), className:'flex-1 px-4 py-3 border border-gray-300 rounded-lg text-base', placeholder:'予定内容'}),
@@ -485,23 +485,23 @@ function App() {
                 patient.roomNumber && React.createElement('span', {className:'px-2 py-1 bg-indigo-100 text-indigo-700 rounded text-xs font-semibold'}, `${patient.roomNumber}号室`),
                 patient.doctor && React.createElement('span', {className:'px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-semibold'}, patient.doctor)
               ),
+              React.createElement('div', {className:'text-sm text-gray-600 mb-1'},
+                '予定日: ',
+                React.createElement('span', {className:'font-semibold text-gray-800'}, new Date(patient.edd).toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric'})),
+                ' / 週数: ',
+                React.createElement('span', {className:'font-bold text-indigo-600'}, calcGA(patient.edd)),
+                patient.admissionDate && (() => {
+                  const adm = new Date(patient.admissionDate);
+                  const today = new Date();
+                  adm.setHours(0, 0, 0, 0);
+                  today.setHours(0, 0, 0, 0);
+                  return React.createElement(React.Fragment, null,
+                    ' / 入院: ',
+                    React.createElement('span', {className:'font-semibold text-gray-800'}, `${Math.floor((today - adm) / (1000 * 60 * 60 * 24)) + 1}日目`)
+                  );
+                })()
+              ),
               React.createElement('div', {className:'space-y-1 text-sm'},
-                React.createElement('div', null,
-                  React.createElement('span', {className:'text-gray-600'}, '予定日: '),
-                  React.createElement('span', {className:'font-semibold text-gray-800'}, new Date(patient.edd).toLocaleDateString('ja-JP',{month:'long',day:'numeric'}))
-                ),
-                React.createElement('div', null,
-                  React.createElement('span', {className:'text-gray-600'}, '週数: '),
-                  React.createElement('span', {className:'font-bold text-indigo-600 text-base'}, calcGA(patient.edd))
-                ),
-                patient.admissionDate && React.createElement('div', null,
-                  React.createElement('span', {className:'text-gray-600'}, '入院: '),
-                  React.createElement('span', {className:'font-semibold text-gray-800'}, (()=>{
-                    const adm=new Date(patient.admissionDate); const today=new Date();
-                    adm.setHours(0,0,0,0); today.setHours(0,0,0,0);
-                    return `${Math.floor((today-adm)/(1000*60*60*24))+1}日目`;
-                  })())
-                ),
                 patient.todayBP && React.createElement('div', null, React.createElement('span', {className:'text-gray-600'}, '本日BP: '), React.createElement('span', {className:'font-semibold'}, patient.todayBP)),
                 patient.yesterdayBP && React.createElement('div', null, React.createElement('span', {className:'text-gray-600'}, '昨日BP: '), React.createElement('span', {className:'text-gray-500'}, patient.yesterdayBP))
               )
