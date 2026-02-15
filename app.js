@@ -292,11 +292,11 @@ function App() {
           React.createElement('div', {className:'grid grid-cols-2 gap-4'},
             React.createElement('div', null,
               React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-2'}, '出産予定日 *'),
-              React.createElement('input', {type:'date', value:formData.edd, onChange:(e)=>setFormData({...formData,edd:e.target.value}), className:'w-full px-4 py-3 border border-gray-300 rounded-lg text-base'})
+              React.createElement('input', {type:'date', value:formData.edd, onChange:(e)=>setFormData({...formData,edd:e.target.value}), className:'w-full px-3 py-3 border border-gray-300 rounded-lg text-base'})
             ),
             React.createElement('div', null,
               React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-2'}, '入院日'),
-              React.createElement('input', {type:'date', value:formData.admissionDate, onChange:(e)=>setFormData({...formData,admissionDate:e.target.value}), className:'w-full px-4 py-3 border border-gray-300 rounded-lg text-base'})
+              React.createElement('input', {type:'date', value:formData.admissionDate, onChange:(e)=>setFormData({...formData,admissionDate:e.target.value}), className:'w-full px-3 py-3 border border-gray-300 rounded-lg text-base'})
             )
           ),
           
@@ -398,8 +398,8 @@ function App() {
             React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-3'}, '今後の予定'),
             React.createElement('div', {className:'space-y-2 mb-3'},
               React.createElement('div', {className:'grid grid-cols-2 gap-2'},
-                React.createElement('input', {type:'date', value:newFuture.date, onChange:(e)=>setNewFuture({...newFuture,date:e.target.value}), className:'px-4 py-3 border border-gray-300 rounded-lg text-base'}),
-                React.createElement('input', {type:'time', value:newFuture.time, onChange:(e)=>setNewFuture({...newFuture,time:e.target.value}), className:'px-4 py-3 border border-gray-300 rounded-lg text-base'})
+                React.createElement('input', {type:'date', value:newFuture.date, onChange:(e)=>setNewFuture({...newFuture,date:e.target.value}), className:'px-3 py-3 border border-gray-300 rounded-lg text-base'}),
+                React.createElement('input', {type:'time', value:newFuture.time, onChange:(e)=>setNewFuture({...newFuture,time:e.target.value}), className:'px-3 py-3 border border-gray-300 rounded-lg text-base'})
               ),
               React.createElement('div', {className:'flex gap-2'},
                 React.createElement('input', {type:'text', value:newFuture.text, onChange:(e)=>setNewFuture({...newFuture,text:e.target.value}), onKeyPress:(e)=>e.key==='Enter'&&addFutureSchedule(), className:'flex-1 px-4 py-3 border border-gray-300 rounded-lg text-base', placeholder:'予定内容'}),
