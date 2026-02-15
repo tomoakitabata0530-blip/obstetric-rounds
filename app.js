@@ -44,6 +44,7 @@ function App() {
       futureScheduleItems: remainingFuture,
       yesterdayBP: lastUpdate && lastUpdate.getTime()!==today.getTime() ? patient.todayBP||'' : patient.yesterdayBP||'',
       todayBP: lastUpdate && lastUpdate.getTime()!==today.getTime() ? '' : patient.todayBP||'',
+      subjective: lastUpdate && lastUpdate.getTime()!==today.getTime() ? '' : patient.subjective||'',
       lastUpdateDate: todayStr
     };
   };
