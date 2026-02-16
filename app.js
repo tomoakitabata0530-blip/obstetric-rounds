@@ -116,14 +116,14 @@ function App() {
   };
 
   const addPatient = () => {
-    if(!formData.name||!formData.edd) { alert('氏名と出産予定日は必須です'); return; }
+    if(!formData.name) { alert('氏名は必須です'); return; }
     const today = new Date(); today.setHours(0,0,0,0);
     setPatients([...patients, {id:Date.now(),...formData,lastUpdateDate:today.toDateString()}]);
     resetForm();
   };
 
   const updatePatient = () => {
-    if(!formData.name||!formData.edd) { alert('氏名と出産予定日は必須です'); return; }
+    if(!formData.name) { alert('氏名は必須です'); return; }
     setPatients(patients.map(p => p.id===editingId ? {...p,...formData} : p));
     resetForm();
   };
@@ -136,7 +136,7 @@ function App() {
     setEditingId(patient.id);
     setFormData({
       patientId:patient.patientId||'', name:patient.name, roomNumber:patient.roomNumber||'', doctor:patient.doctor||'',
-      edd:patient.edd, admissionDate:patient.admissionDate||'', todayBP:patient.todayBP||'',
+      edd:patient.edd||'', admissionDate:patient.admissionDate||'', todayBP:patient.todayBP||'',
       yesterdayBP:patient.yesterdayBP||'', selectedProblems:patient.selectedProblems||[],
       freeTextProblems:patient.freeTextProblems||'', subjective:patient.subjective||'',
       todaySchedule:patient.todaySchedule||[], tomorrowSchedule:patient.tomorrowSchedule||[],
@@ -255,6 +255,31 @@ function App() {
     }));
   };
 
+  const forceUpdate = () => {
+    setPatients(prev => prev.map(p => updateSchedules(p)));
+  };
+
+  const sortFutureSchedule = (items, edd) => {
+    return items.sort((a,b) => {
+      if(!a.date && !b.date) return 0;
+      if(!a.date) return 1;
+      if(!b.date) return -1;
+      
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      dateA.setHours(0,0,0,0);
+      dateB.setHours(0,0,0,0);
+      
+      if(dateA.getTime() !== dateB.getTime()) {
+        return dateA.getTime() - dateB.getTime();
+      }
+      
+      const timeA = a.time || '';
+      const timeB = b.time || '';
+      return timeA.localeCompare(timeB);
+    });
+  };
+
   // 入力フォーム
   if(isAdding || editingId) {
     return React.createElement('div', {className:'min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50'},
@@ -291,7 +316,7 @@ function App() {
           // 出産予定日・入院日
           React.createElement('div', {className:'grid grid-cols-2 gap-4'},
             React.createElement('div', null,
-              React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-2'}, '出産予定日 *'),
+              React.createElement('label', {className:'block text-sm font-medium text-gray-700 mb-2'}, '出産予定日'),
               React.createElement('input', {type:'date', value:formData.edd, onChange:(e)=>setFormData({...formData,edd:e.target.value}), className:'w-full px-1 py-2 border border-gray-300 rounded-lg text-xs'})
             ),
             React.createElement('div', null,
@@ -413,9 +438,12 @@ function App() {
               )
             ),
             React.createElement('div', {className:'space-y-2'},
-              formData.futureScheduleItems.map(item=>
+              sortFutureSchedule(formData.futureScheduleItems, formData.edd).map(item=>
                 React.createElement('div', {key:item.id, className:'flex items-center gap-2 bg-purple-50 p-3 rounded-lg'},
-                  item.date && React.createElement('span', {className:'text-purple-700 font-medium text-xs shrink-0'}, new Date(item.date).toLocaleDateString('ja-JP',{month:'short',day:'numeric'})),
+                  item.date && React.createElement('span', {className:'text-purple-700 font-medium text-xs shrink-0'}, 
+                    new Date(item.date).toLocaleDateString('ja-JP',{month:'short',day:'numeric'}) +
+                    (formData.edd ? ` (${calcGA(formData.edd, item.date)})` : '')
+                  ),
                   React.createElement('span', {className:'flex-1 text-sm text-gray-700'}, item.text),
                   React.createElement('button', {onClick:()=>removeFutureSchedule(item.id), className:'text-red-600 text-xl'}, '×')
                 )
@@ -439,8 +467,13 @@ function App() {
   return React.createElement('div', {className:'min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50'},
     React.createElement('div', {className:'p-4 space-y-4'},
       React.createElement('div', {className:'bg-white rounded-lg shadow p-4'},
-        React.createElement('h1', {className:'text-2xl font-bold text-gray-800'}, '担当患者回診管理'),
-        React.createElement('p', {className:'text-gray-600 text-sm mt-1'}, '産科担当患者の情報を管理します')
+        React.createElement('div', {className:'flex justify-between items-center'},
+          React.createElement('div', null,
+            React.createElement('h1', {className:'text-2xl font-bold text-gray-800'}, '担当患者回診管理'),
+            React.createElement('p', {className:'text-gray-600 text-sm mt-1'}, '産科担当患者の情報を管理します')
+          ),
+          React.createElement('button', {onClick:forceUpdate, className:'px-4 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium'}, '更新')
+        )
       ),
       
       React.createElement('div', {className:'space-y-3'},
@@ -486,11 +519,11 @@ function App() {
                 patient.doctor && React.createElement('span', {className:'px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs font-semibold'}, patient.doctor)
               ),
               React.createElement('div', {className:'space-y-1 text-sm'},
-                React.createElement('div', null,
+                patient.edd && React.createElement('div', null,
                   React.createElement('span', {className:'text-gray-600'}, '出産予定日: '),
                   React.createElement('span', {className:'font-semibold text-gray-800'}, new Date(patient.edd).toLocaleDateString('ja-JP',{year:'numeric',month:'long',day:'numeric'}))
                 ),
-                React.createElement('div', null,
+                patient.edd && React.createElement('div', null,
                   React.createElement('span', {className:'text-gray-600'}, '妊娠週数: '),
                   React.createElement('span', {className:'font-bold text-indigo-600 text-lg'}, calcGA(patient.edd))
                 ),
@@ -548,14 +581,15 @@ function App() {
 
           patient.futureScheduleItems?.length>0 && React.createElement('div', {className:'bg-purple-50 border-l-4 border-purple-400 p-3 rounded'},
             React.createElement('h4', {className:'font-bold text-gray-700 mb-2 text-sm'}, '今後の予定'),
-            React.createElement('div', {className:'space-y-1'}, patient.futureScheduleItems.sort((a,b)=>{
-              if(!a.date&&!b.date)return 0; if(!a.date)return 1; if(!b.date)return -1;
-              return new Date(a.date)-new Date(b.date);
-            }).map(item=>
+            React.createElement('div', {className:'space-y-1'}, sortFutureSchedule(patient.futureScheduleItems, patient.edd).map(item=>
               React.createElement('div', {key:item.id, className:'flex items-start gap-2 text-sm text-gray-700'},
                 React.createElement('span', null, '•'),
                 React.createElement('div', null,
-                  item.date && React.createElement('span', {className:'font-medium text-purple-700'}, new Date(item.date).toLocaleDateString('ja-JP',{month:'short',day:'numeric'})+' - '),
+                  item.date && React.createElement('span', {className:'font-medium text-purple-700'}, 
+                    new Date(item.date).toLocaleDateString('ja-JP',{month:'short',day:'numeric'}) +
+                    (patient.edd ? ` (${calcGA(patient.edd, item.date)})` : '') +
+                    ' - '
+                  ),
                   item.text
                 )
               )
