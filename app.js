@@ -76,7 +76,7 @@ function App() {
   const [newTomorrowTime, setNewTomorrowTime] = useState('');
   const [newFuture, setNewFuture] = useState({date:'',text:'',time:''});
 
-  const commonProblems = ['妊娠糖尿病','妊娠高血圧症候群','前置胎盤','切迫早産','多胎妊娠','前期破水','胎児発育不全','羊水過多','羊水過少','常位胎盤早期剥離','子宮内胎児死亡','帝王切開既往'];
+  const commonProblems = ['妊娠糖尿病','妊娠高血圧症候群','低置胎盤','切迫早産','多胎妊娠','前期破水','胎児発育不全','羊水過多','羊水過少','子宮筋腫','子宮腺筋症','子宮内胎児死亡','帝王切開既往','GBS陽性'];
 
   useEffect(() => {
     try {
